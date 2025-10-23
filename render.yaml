@@ -5,8 +5,6 @@ services:
     plan: free
     region: oregon
     ipAllowList: []
-    databaseName: lavanderia_colonia
-    databaseUser: lavanderia_user
 
   # Redis para sessões
   - type: redis
