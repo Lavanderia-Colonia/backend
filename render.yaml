@@ -1,59 +1,12 @@
 services:
-  # Banco de Dados PostgreSQL
-  - type: pserv
-    name: lavanderia-colonia-db
-    plan: free
-    region: oregon
-
-  # Redis para sessões
-  - type: redis
-    name: lavanderia-colonia-redis
-    plan: free
-    region: oregon
-    maxmemoryPolicy: allkeys-lru
-    ipAllowList: []
-
   # API Backend
-  - type: web
-    name: lavanderia-colonia-api
-    runtime: docker
-    region: oregon
-    plan: free
-    dockerfilePath: ./api/Dockerfile
-    dockerContext: ./api
-    envVars:
-      - key: SPRING_PROFILES_ACTIVE
-        value: prod
-      - key: SERVER_PORT
-        value: 8080
-      - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: lavanderia-colonia-db
-          property: connectionString
-      - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase:
-          name: lavanderia-colonia-db
-          property: user
-      - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: lavanderia-colonia-db
-          property: password
-      - key: SPRING_REDIS_HOST
-        fromService:
-          type: redis
-          name: lavanderia-colonia-redis
-          property: host
-      - key: SPRING_REDIS_PORT
-        fromService:
-          type: redis
-          name: lavanderia-colonia-redis
-          property: port
-      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
-        value: update
-      - key: SPRING_JPA_SHOW_SQL
-        value: false
-      - key: JAVA_OPTS
-        value: -Xmx512m -Xms256m
-    healthCheckPath: /actuator/health
-    autoDeploy: true
-
+  
+type: web
+  name: lavanderia-colonia-api
+  runtime: docker
+  region: oregon
+  plan: free
+  dockerfilePath: ./api/Dockerfile
+  dockerContext: ./api
+  healthCheckPath: /actuator/health
+  autoDeploy: true
