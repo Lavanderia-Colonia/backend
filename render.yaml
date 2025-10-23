@@ -4,7 +4,6 @@ services:
     name: lavanderia-colonia-db
     plan: free
     region: oregon
-    ipAllowList: []
 
   # Redis para sessões
   - type: redis
@@ -12,7 +11,6 @@ services:
     plan: free
     region: oregon
     maxmemoryPolicy: allkeys-lru
-    ipAllowList: []
 
   # API Backend
   - type: web
