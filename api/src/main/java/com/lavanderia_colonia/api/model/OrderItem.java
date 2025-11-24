@@ -23,7 +23,7 @@ public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(length = 15)
     private String brand;
@@ -31,14 +31,15 @@ public class OrderItem {
     @Column(nullable = false)
     private Integer quantity;
 
-    @Column(length = 40)
-    private String color;
-
-    @Column(length = 1000)
-    private String note;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "COLOR_id", nullable = false)
+    private OrderItemColor color;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
+
+    @Column(length = 300)
+    private String observation;
 
     @Column(name = "created_at")
     private LocalDate createdAt;
