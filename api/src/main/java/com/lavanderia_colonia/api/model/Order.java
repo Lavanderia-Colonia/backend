@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lavanderia_colonia.api.enums.OrderType;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,18 +26,20 @@ import lombok.Data;
 @Data
 public class Order {
 
+    public Order() {
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(length = 6)
-    private String code;
-
-    @Column(nullable = false)
-    private Integer status;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id", nullable = false)
+    private OrderStatus status;
 
     @Column(name = "finish_type", length = 50)
-    private String finishType;
+    private OrderType finishType;
 
     @Column(name = "finish_deadline", length = 10)
     private String finishDeadline;
@@ -52,9 +56,6 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
-
-    public Order() {
-    }
 
     public Client getClient() {
         return client;
