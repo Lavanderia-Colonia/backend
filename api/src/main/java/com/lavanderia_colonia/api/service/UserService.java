@@ -25,10 +25,14 @@ public class UserService {
     }
 
     @Transactional
-    public User changePassword(@NonNull String name, String password) {
+    public User changePassword(@NonNull String name, String currentPassword, String newPassword) {
         User user = findByName(name);
 
-        Password passwordValid = new Password(password);
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new RuntimeException("Senha atual inválida");
+        }
+
+        Password passwordValid = new Password(newPassword);
 
         String encryptedPassword = passwordEncoder.encode(passwordValid.getValue());
 

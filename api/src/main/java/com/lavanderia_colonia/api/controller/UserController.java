@@ -31,10 +31,16 @@ public class UserController {
 
     @PutMapping("/password")
     public ResponseEntity<User> changePassword(Principal principal, @RequestBody ChangePasswordRequest request) {
-        return ResponseEntity.ok(userService.changePassword(principal.getName(), request.newPassword()));
+
+        if (request.currentPassword() == null || request.newPassword() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity
+                .ok(userService.changePassword(principal.getName(), request.currentPassword(), request.newPassword()));
     }
 
-    public record ChangePasswordRequest(String newPassword) {
+    public record ChangePasswordRequest(String currentPassword, String newPassword) {
     }
 
     public record ChangeNameRequest(String newName) {
