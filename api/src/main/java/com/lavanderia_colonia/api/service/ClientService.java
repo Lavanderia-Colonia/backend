@@ -58,6 +58,10 @@ public class ClientService {
     public Client update(Long id, ClientDTO clientDTO) {
         Client client = findById(id);
 
+        if (client == null) {
+            throw new ResourceNotFoundException("Cliente nao encontrado com ID: " + id);
+        }
+
         mapDtoToEntity(clientDTO, client, true);
 
         return clientRepository.save(client);
