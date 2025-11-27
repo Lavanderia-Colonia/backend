@@ -1,0 +1,71 @@
+@urlbase = http://localhost:8080/api/v1/
+
+
+# @name signin
+POST {{urlbase}}auth/signin
+Content-Type: application/json
+
+{
+    "login": "Lavanderia",
+    "password": "123123123"
+}
+
+@token = {{signin.response.body.accessToken}}
+
+GET {{urlbase}}clients
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+POST {{urlbase}}clients
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Diogo",
+    "telephone": "1231231231",
+    "street": "Rua das Flores",
+    "number": "123",
+    "district": "Taiacu",
+    "zipCode": "123123",
+    "complement": "abcdefghijklmnopqrstuvwxyz"
+}
+
+PUT {{urlbase}}clients/2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "number": "13",
+    "district": "Taiacupeba",
+    "zipCode": "321321",
+    "complement": "xd"
+}
+
+PUT {{urlbase}}clients/2/toggle-active
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+GET {{urlbase}}admin
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+PUT {{urlbase}}admin
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "newName": "Lavanderia"
+}
+
+PUT {{urlbase}}admin/password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "currentPassword": "123123123",
+    "newPassword": "123123123"
+}
+
+GET {{urlbase}}order-item-colors
+Authorization: Bearer {{token}}
+Content-Type: application/json
