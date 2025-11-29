@@ -69,3 +69,35 @@ Content-Type: application/json
 GET {{urlbase}}order-item-colors
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+GET {{urlbase}}order-statuses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+GET {{urlbase}}products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+GET {{urlbase}}orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+POST {{urlbase}}orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "clientId": "1",
+    "finishType": "ENTREGA",
+    "finishDeadline": "2025-01-01",
+    "items": [
+        {
+            "productId": 2,
+            "unitPrice": 3,
+            "brand": "Colgate",
+            "colorId": 2,
+            "quantity": 3,
+            "observation": "X"
+        }
+    ]
+}
