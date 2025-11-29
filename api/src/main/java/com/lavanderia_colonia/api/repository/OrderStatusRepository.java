@@ -7,5 +7,5 @@ import com.lavanderia_colonia.api.model.OrderStatus;
 
 @Repository
 public interface OrderStatusRepository extends JpaRepository<OrderStatus, Long> {
-
+    public OrderStatus findByName(String name);
 }
