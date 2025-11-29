@@ -5,7 +5,6 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,7 +30,7 @@ public class OrderItem {
     @Column(nullable = false)
     private Integer quantity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "COLOR_id", nullable = false)
     private OrderItemColor color;
 
@@ -47,11 +46,11 @@ public class OrderItem {
     @Column(name = "updated_at")
     private LocalDate updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "ORDER_id", nullable = false)
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "PRODUCT_id", nullable = false)
     private Product product;
 
