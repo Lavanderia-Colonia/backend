@@ -28,7 +28,10 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
-        return path.startsWith("/api/v1/setup") ||
+        String method = request.getMethod();
+
+        return "OPTIONS".equalsIgnoreCase(method) ||
+                path.startsWith("/api/v1/setup") ||
                 path.startsWith("/api/v1/auth") ||
                 path.startsWith("/actuator");
     }
