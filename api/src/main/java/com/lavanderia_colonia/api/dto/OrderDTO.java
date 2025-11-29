@@ -11,8 +11,10 @@ public class OrderDTO {
 
     private Long id;
     private Long clientId;
+    private Long statusId;
     private OrderType finishType;
     private String finishDeadline;
     private List<OrderItemDTO> items;
+    private String observation;
 
 }
