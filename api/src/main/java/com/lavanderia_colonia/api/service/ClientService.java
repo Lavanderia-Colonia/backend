@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.lavanderia_colonia.api.dto.ClientDTO;
 import com.lavanderia_colonia.api.exception.ResourceNotFoundException;
 import com.lavanderia_colonia.api.model.Client;
+import com.lavanderia_colonia.api.model.Order;
 import com.lavanderia_colonia.api.repository.ClientRepository;
 
 import jakarta.transaction.Transactional;
@@ -30,6 +31,16 @@ public class ClientService {
             return clientRepository.findByName(name.trim(), pageable);
         }
         return clientRepository.findAll(pageable);
+    }
+
+    public List<Order> getHistory(Long id) {
+        if (id == null) {
+            throw new ResourceNotFoundException("ID nao pode ser nulo");
+        }
+
+        List<Order> orders = clientRepository.findById(id).get().getOrders();
+
+        return orders;
     }
 
     public List<Client> findAllActive(Boolean active, String name) {
