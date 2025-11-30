@@ -41,6 +41,18 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 
+    @PostMapping("/{id}/finish")
+    public ResponseEntity<Order> finishOrder(@PathVariable Long id) {
+        Order order = orderService.finishOrder(id);
+        return ResponseEntity.ok(order);
+    }
+
+    @PostMapping("/{id}/cancel")
+    public ResponseEntity<Order> cancelOrder(@PathVariable Long id) {
+        Order order = orderService.cancelOrder(id);
+        return ResponseEntity.ok(order);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Order> update(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
         return ResponseEntity.ok(orderService.update(id, orderDTO));
