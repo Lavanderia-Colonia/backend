@@ -1,5 +1,6 @@
 package com.lavanderia_colonia.api.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -93,6 +94,39 @@ public class OrderService {
         order.setOrderItems(items);
 
         return orderRepository.save(order);
+    }
+
+    @Transactional
+    public Order finishOrder(Long id) {
+
+        Order order = findById(id);
+
+        if (order == null) {
+            throw new RuntimeException("Order nao encontrado com ID: " + id);
+        }
+
+        order.setStatus(orderStatusRepository.findByName("Pago"));
+
+        order.setDeliveryDate(LocalDateTime.now());
+
+        return orderRepository.save(order);
+    }
+
+    @Transactional
+    public Order cancelOrder(Long id) {
+
+        Order order = findById(id);
+
+        if (order == null) {
+            throw new RuntimeException("Order nao encontrado com ID: " + id);
+        }
+
+        order.setStatus(orderStatusRepository.findByName("Cancelado"));
+
+        order.setDeliveryDate(LocalDateTime.now());
+
+        return orderRepository.save(order);
+
     }
 
     public Order update(Long id, OrderDTO orderDTO) {
