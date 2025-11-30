@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class OrderItemDTO {
-
+    private Long id;
     private Long productId;
     private BigDecimal unitPrice;
     private String brand;
