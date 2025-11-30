@@ -87,7 +87,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "clientId": "1",
+    "clientId": 1,
     "finishType": "ENTREGA",
     "finishDeadline": "2025-01-01",
     "items": [
@@ -98,6 +98,22 @@ Content-Type: application/json
             "colorId": 2,
             "quantity": 3,
             "observation": "X"
+        },
+        {
+            "productId": 2,
+            "unitPrice": 3,
+            "brand": "Colgate",
+            "colorId": 2,
+            "quantity": 3,
+            "observation": "X"
         }
     ]
 }
+
+POST {{urlbase}}orders/1/cancel
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+POST {{urlbase}}orders/1/finish
+Authorization: Bearer {{token}}
+Content-Type: application/json
