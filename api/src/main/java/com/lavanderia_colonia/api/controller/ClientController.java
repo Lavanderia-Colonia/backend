@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lavanderia_colonia.api.dto.ClientDTO;
 import com.lavanderia_colonia.api.model.Client;
+import com.lavanderia_colonia.api.model.Order;
 import com.lavanderia_colonia.api.service.ClientService;
 
 @RestController
@@ -33,6 +34,14 @@ public class ClientController {
             @RequestParam(required = false) String name, @RequestParam(required = false) Boolean active) {
         Page<Client> clients = clientService.findAll(pageable, name);
         return ResponseEntity.ok(clients);
+    }
+
+    @GetMapping("/{id}/history")
+    public ResponseEntity<List<Order>> getHistory(@PathVariable Long id) {
+
+        List<Order> orders = clientService.getHistory(id);
+        return ResponseEntity.ok(orders);
+
     }
 
     @GetMapping("/active")
