@@ -1,12 +1,12 @@
 package com.lavanderia_colonia.api.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lavanderia_colonia.api.enums.OrderType;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,12 +36,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id", nullable = false)
     private OrderStatus status;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "finish_type", length = 50)
+    @Column(name = "finish_type")
     private OrderType finishType;
 
     @Column(name = "finish_deadline", length = 10)
@@ -53,12 +53,16 @@ public class Order {
     @Column(name = "updated_at")
     private LocalDate updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "delivery_date")
+    private LocalDateTime deliveryDate;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems = new ArrayList<>();
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<OrderItem> orderItems;
 
     public Client getClient() {
         return client;
