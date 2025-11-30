@@ -26,7 +26,7 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 15)
+    @Column(length = 50)
     private String brand;
 
     @Column(nullable = false)
