@@ -40,6 +40,8 @@ public class ClientController {
     public ResponseEntity<List<Order>> getHistory(@PathVariable Long id) {
 
         List<Order> orders = clientService.getHistory(id);
+
+        orders.forEach(order -> order.getOrderItems());
         return ResponseEntity.ok(orders);
 
     }
