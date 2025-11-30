@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.lavanderia_colonia.api.dto.OrderDTO;
+import com.lavanderia_colonia.api.dto.OrderItemDTO;
 import com.lavanderia_colonia.api.model.Order;
 import com.lavanderia_colonia.api.model.OrderItem;
 import com.lavanderia_colonia.api.model.OrderStatus;
@@ -134,22 +134,66 @@ public class OrderService {
         Order order = findById(id);
 
         if (order == null) {
-            throw new RuntimeException("Order nao encontrado com ID: " + id);
+            throw new RuntimeException("Order não encontrado com ID: " + id);
         }
 
         order.setClient(clientRepository.findById(orderDTO.getClientId()).orElse(null));
         order.setFinishDeadline(orderDTO.getFinishDeadline());
 
-        List<OrderItem> orderItems = orderDTO.getItems().stream()
-                .map(dto -> {
-                    OrderItem item = new OrderItem();
-                    BeanUtils.copyProperties(dto, item);
-                    item.setOrder(order);
-                    return item;
-                })
+        List<Long> updatedItemIds = orderDTO.getItems().stream()
+                .map(OrderItemDTO::getId)
+                .filter(itemId -> itemId != null)
                 .collect(Collectors.toList());
 
-        orderItemRepository.saveAll(orderItems);
+        List<OrderItem> updatedOrderItems = new ArrayList<>();
+
+        for (OrderItemDTO dto : orderDTO.getItems()) {
+            if (dto.getId() != null) {
+                OrderItem existingItem = orderItemRepository.findById(dto.getId())
+                        .orElseThrow(() -> new RuntimeException("OrderItem não encontrado com ID: " + dto.getId()));
+
+                existingItem.setBrand(dto.getBrand());
+                existingItem.setQuantity(dto.getQuantity());
+                existingItem.setPrice(dto.getUnitPrice());
+                existingItem.setObservation(dto.getObservation());
+
+                var color = orderItemColorRepository.findById(dto.getColorId())
+                        .orElseThrow(() -> new RuntimeException("Color não encontrada: " + dto.getColorId()));
+
+                var product = productRepository.findById(dto.getProductId())
+                        .orElseThrow(() -> new RuntimeException("Product não encontrado: " + dto.getProductId()));
+
+                existingItem.setColor(color);
+                existingItem.setProduct(product);
+
+                updatedOrderItems.add(existingItem);
+
+            } else {
+                OrderItem newItem = new OrderItem();
+                newItem.setBrand(dto.getBrand());
+                newItem.setQuantity(dto.getQuantity());
+                newItem.setPrice(dto.getUnitPrice());
+                newItem.setObservation(dto.getObservation());
+
+                var color = orderItemColorRepository.findById(dto.getColorId())
+                        .orElseThrow(() -> new RuntimeException("Color não encontrada: " + dto.getColorId()));
+
+                var product = productRepository.findById(dto.getProductId())
+                        .orElseThrow(() -> new RuntimeException("Product não encontrado: " + dto.getProductId()));
+
+                newItem.setColor(color);
+                newItem.setProduct(product);
+                newItem.setOrder(order);
+
+                updatedOrderItems.add(newItem);
+            }
+        }
+
+        orderItemRepository.saveAll(updatedOrderItems);
+
+        order.getOrderItems().stream()
+                .filter(item -> !updatedItemIds.contains(item.getId()))
+                .forEach(orderItemRepository::delete);
 
         return orderRepository.save(order);
     }
