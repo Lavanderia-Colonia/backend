@@ -72,6 +72,9 @@ public class OrderService {
         order.setFinishDeadline(orderDTO.getFinishDeadline());
         order.setFinishType(orderDTO.getFinishType());
         OrderStatus initialStatus = orderStatusRepository.findByName("Em Aberto");
+        if (initialStatus == null) {
+            throw new RuntimeException("Status 'Em Aberto' não encontrado no banco de dados");
+        }
         order.setStatus(initialStatus);
 
         List<OrderItem> items = new ArrayList<>();
@@ -116,7 +119,11 @@ public class OrderService {
             throw new RuntimeException("Order nao encontrado com ID: " + id);
         }
 
-        order.setStatus(orderStatusRepository.findByName("Pago"));
+        OrderStatus paidStatus = orderStatusRepository.findByName("Pago");
+        if (paidStatus == null) {
+            throw new RuntimeException("Status 'Pago' não encontrado no banco de dados");
+        }
+        order.setStatus(paidStatus);
 
         order.setDeliveryDate(LocalDateTime.now());
 
@@ -134,7 +141,11 @@ public class OrderService {
             throw new RuntimeException("Order nao encontrado com ID: " + id);
         }
 
-        order.setStatus(orderStatusRepository.findByName("Cancelado"));
+        OrderStatus cancelledStatus = orderStatusRepository.findByName("Cancelado");
+        if (cancelledStatus == null) {
+            throw new RuntimeException("Status 'Cancelado' não encontrado no banco de dados");
+        }
+        order.setStatus(cancelledStatus);
 
         order.setDeliveryDate(LocalDateTime.now());
 
