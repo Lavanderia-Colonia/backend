@@ -23,6 +23,7 @@ public class CorsConfig {
         config.addAllowedOriginPattern("http://127.0.0.1:*");
         config.addAllowedOriginPattern("https://*.onrender.com");
         config.addAllowedOriginPattern("https://*.vercel.app");
+        config.addAllowedOriginPattern("https://lavanderia-colonia.netlify.app");
 
         config.addAllowedHeader("*");
 
