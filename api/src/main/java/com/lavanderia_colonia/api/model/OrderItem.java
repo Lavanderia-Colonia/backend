@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -68,12 +69,43 @@ public class OrderItem {
         this.order = order;
     }
 
+    @JsonIgnore
     public Product getProduct() {
         return product;
     }
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    @JsonIgnore
+    public OrderItemColor getColor() {
+        return color;
+    }
+
+    public void setColor(OrderItemColor color) {
+        this.color = color;
+    }
+
+    public Integer getProductId() {
+        return product != null ? product.getId() : null;
+    }
+
+    public Long getColorId() {
+        return color != null ? color.getId() : null;
+    }
+
+    @JsonIgnore
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public BigDecimal getUnitPrice() {
+        return price;
     }
 
     @PrePersist

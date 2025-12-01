@@ -15,4 +15,13 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o FROM Order o WHERE CAST(o.id AS string) LIKE %:id%")
     Page<Order> searchById(@Param("id") String id, Pageable pageable);
 
+    @Query("""
+        SELECT DISTINCT o
+        FROM Order o
+        LEFT JOIN FETCH o.orderItems items
+        LEFT JOIN FETCH items.color
+        WHERE o.id = :id
+    """)
+    Order findByIdWithItems(@Param("id") Long id);
+
 }

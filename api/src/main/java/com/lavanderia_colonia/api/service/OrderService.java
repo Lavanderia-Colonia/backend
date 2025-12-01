@@ -116,6 +116,11 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
+        for (OrderItem item : items) {
+            item.setOrder(savedOrder);
+        }
+        orderItemRepository.saveAll(items);
+
         auditLogger.log("Criou o pedido: " + savedOrder.getId());
 
         return savedOrder;
