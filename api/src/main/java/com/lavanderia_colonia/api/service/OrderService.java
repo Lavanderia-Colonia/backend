@@ -15,6 +15,7 @@ import com.lavanderia_colonia.api.dto.OrderItemDTO;
 import com.lavanderia_colonia.api.model.Order;
 import com.lavanderia_colonia.api.model.OrderItem;
 import com.lavanderia_colonia.api.model.OrderStatus;
+import com.lavanderia_colonia.api.pattern.creational.singleton.AuditLogger;
 import com.lavanderia_colonia.api.repository.ClientRepository;
 import com.lavanderia_colonia.api.repository.OrderItemColorRepository;
 import com.lavanderia_colonia.api.repository.OrderItemRepository;
@@ -45,13 +46,15 @@ public class OrderService {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    private final AuditLogger auditLogger = AuditLogger.getInstance();
+
     public Order findById(Long id) {
         return orderRepository.findById(id).orElse(null);
     }
 
     public Page<Order> findAll(String code, Pageable pageable) {
         if (code != null && !code.isBlank()) {
-            return orderRepository.findByCodeContainingIgnoreCase(code, pageable);
+            return orderRepository.findByIdContainingIgnoreCase(code, pageable);
         }
 
         return orderRepository.findAll(pageable);
@@ -97,7 +100,11 @@ public class OrderService {
 
         order.setOrderItems(items);
 
-        return orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
+
+        auditLogger.log("Criou o pedido: " + savedOrder.getId());
+
+        return savedOrder;
     }
 
     @Transactional
@@ -112,6 +119,8 @@ public class OrderService {
         order.setStatus(orderStatusRepository.findByName("Pago"));
 
         order.setDeliveryDate(LocalDateTime.now());
+
+        auditLogger.log("Finalizou o pedido: " + order.getId());
 
         return orderRepository.save(order);
     }
@@ -128,6 +137,8 @@ public class OrderService {
         order.setStatus(orderStatusRepository.findByName("Cancelado"));
 
         order.setDeliveryDate(LocalDateTime.now());
+
+        auditLogger.log("Cancelou o pedido: " + order.getId());
 
         return orderRepository.save(order);
 
