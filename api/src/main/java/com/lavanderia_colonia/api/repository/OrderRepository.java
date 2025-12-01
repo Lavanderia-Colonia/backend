@@ -10,6 +10,7 @@ import com.lavanderia_colonia.api.model.Order;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    Page<Order> findByIdContainingIgnoreCase(Integer id, Pageable pageable);
+    @Query("SELECT o FROM Order o WHERE CAST(o.id AS string) LIKE %:id%")
+    Page<Order> searchById(@Param("id") String id, Pageable pageable);
 
 }
