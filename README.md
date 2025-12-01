@@ -455,16 +455,20 @@ Este projeto foi desenvolvido para fins acadêmicos na FATEC Mogi das Cruzes.
 
 ## 👥 Autores
 
+
+- Bianca Nunes Codo - RA: 1840482412013
+- Diogo Santana de Almeida - RA: 1840482412001
+- Felipe Kenji Oizumi - RA: 1840482412024
+- João Paulo Akira Sigue - RA: 1840482412005
+- Luciano Akihiro Tokuno - RA: 1840482412017
+- Luana Mika Maruyama - RA: 1840482412016
+- Marcos Guilherme Tasato - RA: 1840482412006
+
 **Projeto desenvolvido por alunos do curso de Análise e Desenvolvimento de Sistemas**  
 Faculdade de Tecnologia de Mogi das Cruzes - FATEC
 
 ---
 
-## 📞 Suporte
-
-Para dúvidas ou sugestões sobre o projeto acadêmico, entre em contato através dos canais da FATEC Mogi das Cruzes.
-
----
 
 ## 🎓 Aprendizados
 
@@ -481,4 +485,4 @@ Este projeto permitiu aplicar na prática conceitos fundamentais de Engenharia d
 
 ---
 
-**Desenvolvido com ☕ e 💙 na FATEC Mogi das Cruzes**
+**Desenvolvido com ☕ na FATEC Mogi das Cruzes**
