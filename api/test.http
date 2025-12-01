@@ -1,0 +1,154 @@
+@urlbase = http://localhost:8080/api/v1/
+
+
+# @name signin
+POST {{urlbase}}auth/signin
+Content-Type: application/json
+
+{
+    "login": "Lavanderia",
+    "password": "123123123"
+}
+
+@token = {{signin.response.body.accessToken}}
+
+GET {{urlbase}}clients
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+POST {{urlbase}}clients
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "Diogo",
+    "telephone": "1231231231",
+    "street": "Rua das Flores",
+    "number": "123",
+    "district": "Taiacu",
+    "zipCode": "123123",
+    "complement": "abcdefghijklmnopqrstuvwxyz"
+}
+
+PUT {{urlbase}}clients/2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "number": "13",
+    "district": "Taiacupeba",
+    "zipCode": "321321",
+    "complement": "xd"
+}
+
+PUT {{urlbase}}clients/2/toggle-active
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+GET {{urlbase}}admin
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+PUT {{urlbase}}admin
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "newName": "Lavanderia"
+}
+
+PUT {{urlbase}}admin/password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "currentPassword": "123123123",
+    "newPassword": "123123123"
+}
+
+GET {{urlbase}}order-item-colors
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+GET {{urlbase}}order-statuses
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+GET {{urlbase}}products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+GET {{urlbase}}orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+POST {{urlbase}}orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "clientId": 1,
+    "finishType": "ENTREGA",
+    "finishDeadline": "2025-01-01",
+    "items": [
+        {
+            "productId": 2,
+            "unitPrice": 3,
+            "brand": "Colgate",
+            "colorId": 2,
+            "quantity": 3,
+            "observation": "X"
+        },
+        {
+            "productId": 2,
+            "unitPrice": 3,
+            "brand": "Colgate",
+            "colorId": 2,
+            "quantity": 3,
+            "observation": "X"
+        }
+    ]
+}
+
+PUT {{urlbase}}orders/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "statusId": 3,
+    "finishType": "ENTREGA",
+    "finishDeadline": "2025-01-01",
+    "clientId": 1,
+    "items": [
+        {
+            "id": 11,
+            "productId": 2,
+            "unitPrice": 3.00,
+            "brand": "Colgate editado",
+            "colorId": 2,
+            "quantity": 3,
+            "observation": "X"
+        },
+        {
+            "id": 12,
+            "productId": 2,
+            "unitPrice": 3.00,
+            "brand": "Colgate editado 1",
+            "colorId": 2,
+            "quantity": 3,
+            "observation": "X"
+        }
+    ]
+}
+
+POST {{urlbase}}orders/1/cancel
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+POST {{urlbase}}orders/1/finish
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+GET {{urlbase}}audits
+Authorization: Bearer {{token}}
+Content-Type: application/json

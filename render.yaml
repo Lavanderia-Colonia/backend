@@ -1,0 +1,12 @@
+services:
+  # API Backend
+  
+type: web
+  name: lavanderia-colonia-api
+  runtime: docker
+  region: oregon
+  plan: free
+  dockerfilePath: ./api/Dockerfile
+  dockerContext: ./api
+  healthCheckPath: /actuator/health
+  autoDeploy: true
