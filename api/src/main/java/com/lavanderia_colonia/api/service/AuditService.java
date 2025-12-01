@@ -1,30 +1,41 @@
 package com.lavanderia_colonia.api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.lavanderia_colonia.api.dto.AuditDTO;
 import com.lavanderia_colonia.api.model.Audit;
+import com.lavanderia_colonia.api.pattern.creational.singleton.AuditLogger;
 import com.lavanderia_colonia.api.repository.AuditRepository;
 
-import jakarta.transaction.Transactional;
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class AuditService {
-    @Autowired
-    private AuditRepository auditRepository;
 
-    public Page<Audit> get(Pageable pageable) {
-        if (pageable == null) {
-            pageable = Pageable.unpaged();
-        }
+    private final AuditRepository auditRepository;
+    private final AuditLogger auditLogger;
 
-        return auditRepository.findAll(pageable);
+    public AuditService(AuditRepository auditRepository) {
+        this.auditRepository = auditRepository;
+        this.auditLogger = AuditLogger.getInstance();
     }
 
-    @Transactional
-    public void create(Audit audit) {
-        auditRepository.save(audit);
+    @PostConstruct
+    public void init() {
+        auditLogger.setRepository(auditRepository);
     }
+
+    public Audit create(AuditDTO auditDTO) {
+        Audit audit = new Audit();
+        audit.setDescription(auditDTO.getDescription());
+        audit.setChangeDate(auditDTO.getChangeDate());
+        return auditRepository.save(audit);
+    }
+
+    public List<Audit> getRecentAudits() {
+        return auditRepository.findTop10ByOrderByChangeDateDesc();
+    }
+
 }
