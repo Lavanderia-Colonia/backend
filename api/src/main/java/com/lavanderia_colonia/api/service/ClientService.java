@@ -11,6 +11,7 @@ import com.lavanderia_colonia.api.dto.ClientDTO;
 import com.lavanderia_colonia.api.exception.ResourceNotFoundException;
 import com.lavanderia_colonia.api.model.Client;
 import com.lavanderia_colonia.api.model.Order;
+import com.lavanderia_colonia.api.pattern.creational.singleton.AuditLogger;
 import com.lavanderia_colonia.api.repository.ClientRepository;
 
 import jakarta.transaction.Transactional;
@@ -20,6 +21,8 @@ public class ClientService {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    AuditLogger auditLogger = AuditLogger.getInstance();
 
     public ClientService() {
 
@@ -61,6 +64,8 @@ public class ClientService {
         client.setActive(true);
 
         client.setOrders(List.of());
+
+        auditLogger.log("Criou o cliente: " + client.getName());
 
         return clientRepository.save(client);
     }
