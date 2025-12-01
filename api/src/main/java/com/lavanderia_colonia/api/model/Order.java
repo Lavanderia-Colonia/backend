@@ -5,8 +5,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lavanderia_colonia.api.enums.OrderType;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -60,7 +62,7 @@ public class Order {
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<OrderItem> orderItems;
 
@@ -80,12 +82,26 @@ public class Order {
         this.orderItems = orderItems;
     }
 
+    @JsonProperty("items")
+    public List<OrderItem> getItems() {
+        return orderItems;
+    }
+
     public OrderStatus getStatus() {
         return status;
     }
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public Integer getTotalPieces() {
+        if (orderItems == null || orderItems.isEmpty()) {
+            return 0;
+        }
+        return orderItems.stream()
+                .mapToInt(item -> item.getQuantity() != null ? item.getQuantity() : 0)
+                .sum();
     }
 
     @PrePersist

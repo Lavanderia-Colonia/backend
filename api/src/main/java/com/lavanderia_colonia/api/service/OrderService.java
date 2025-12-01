@@ -52,11 +52,10 @@ public class OrderService {
         return orderRepository.findById(id).orElse(null);
     }
 
-    public Page<Order> findAll(String code, Pageable pageable) {
-        if (code != null && !code.isBlank()) {
-            return orderRepository.findByIdContainingIgnoreCase(code, pageable);
+    public Page<Order> findAll(Integer code, Pageable pageable) {
+        if (code != null) {
+            return orderRepository.searchById(code.toString(), pageable);
         }
-
         return orderRepository.findAll(pageable);
     }
 
@@ -116,6 +115,11 @@ public class OrderService {
         }
 
         Order savedOrder = orderRepository.save(order);
+
+        for (OrderItem item : items) {
+            item.setOrder(savedOrder);
+        }
+        orderItemRepository.saveAll(items);
 
         auditLogger.log("Criou o pedido: " + savedOrder.getId());
 

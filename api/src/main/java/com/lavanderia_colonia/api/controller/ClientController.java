@@ -37,9 +37,9 @@ public class ClientController {
     }
 
     @GetMapping("/{id}/history")
-    public ResponseEntity<List<Order>> getHistory(@PathVariable Long id) {
+    public ResponseEntity<List<Order>> getHistory(@PathVariable Long id, @RequestParam(required = false) Integer code) {
 
-        List<Order> orders = clientService.getHistory(id);
+        List<Order> orders = clientService.getHistory(id, code);
 
         orders.forEach(order -> order.getOrderItems());
         return ResponseEntity.ok(orders);
