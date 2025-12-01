@@ -26,8 +26,8 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping
-    public ResponseEntity<Page<Order>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(orderService.findAll(pageable));
+    public ResponseEntity<Page<Order>> findAll(String code, Pageable pageable) {
+        return ResponseEntity.ok(orderService.findAll(code, pageable));
     }
 
     @GetMapping("/{id}")

@@ -49,7 +49,11 @@ public class OrderService {
         return orderRepository.findById(id).orElse(null);
     }
 
-    public Page<Order> findAll(Pageable pageable) {
+    public Page<Order> findAll(String code, Pageable pageable) {
+        if (code != null && !code.isBlank()) {
+            return orderRepository.findByCodeContainingIgnoreCase(code, pageable);
+        }
+
         return orderRepository.findAll(pageable);
     }
 
