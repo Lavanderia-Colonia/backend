@@ -10,6 +10,6 @@ import com.lavanderia_colonia.api.model.Order;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    Page<Order> findByIdContainingIgnoreCase(String id, Pageable pageable);
+    Page<Order> findByIdContainingIgnoreCase(Integer id, Pageable pageable);
 
 }

@@ -26,7 +26,7 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping
-    public ResponseEntity<Page<Order>> findAll(String code, Pageable pageable) {
+    public ResponseEntity<Page<Order>> findAll(Integer code, Pageable pageable) {
         return ResponseEntity.ok(orderService.findAll(code, pageable));
     }
 

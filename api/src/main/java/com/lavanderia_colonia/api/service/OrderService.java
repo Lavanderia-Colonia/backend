@@ -52,7 +52,7 @@ public class OrderService {
         return orderRepository.findById(id).orElse(null);
     }
 
-    public Page<Order> findAll(String code, Pageable pageable) {
+    public Page<Order> findAll(Integer code, Pageable pageable) {
         if (code != null && !code.isBlank()) {
             return orderRepository.findByIdContainingIgnoreCase(code, pageable);
         }
