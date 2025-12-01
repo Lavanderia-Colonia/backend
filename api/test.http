@@ -148,3 +148,7 @@ Content-Type: application/json
 POST {{urlbase}}orders/1/finish
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+GET {{urlbase}}audits
+Authorization: Bearer {{token}}
+Content-Type: application/json
