@@ -14,4 +14,10 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     public Page<Client> findByName(String name, Pageable pageable);
 
     public List<Client> findByActiveAndName(boolean active, String name);
+
+    @Query("SELECT o FROM Order o WHERE o.client.id = :clientId AND CAST(o.id AS string) LIKE %:code%")
+    List<Order> findOrdersByClientAndCode(
+        @Param("clientId") Long clientId,
+        @Param("code") String code
+    );
 }

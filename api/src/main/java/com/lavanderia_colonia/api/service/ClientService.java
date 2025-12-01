@@ -36,14 +36,17 @@ public class ClientService {
         return clientRepository.findAll(pageable);
     }
 
-    public List<Order> getHistory(Long id) {
-        if (id == null) {
-            throw new ResourceNotFoundException("ID nao pode ser nulo");
+    public List<Order> getHistory(Long id, Integer code) {
+        if (id == null)
+            throw new ResourceNotFoundException("ID não pode ser nulo");
+
+        if (code == null) {
+            return clientRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"))
+                    .getOrders();
         }
 
-        List<Order> orders = clientRepository.findById(id).get().getOrders();
-
-        return orders;
+        return clientRepository.findOrdersByClientAndCode(id, code.toString());
     }
 
     public List<Client> findAllActive(Boolean active, String name) {
