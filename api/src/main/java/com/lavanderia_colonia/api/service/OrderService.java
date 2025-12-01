@@ -71,11 +71,17 @@ public class OrderService {
         order.setClient(client);
         order.setFinishDeadline(orderDTO.getFinishDeadline());
         order.setFinishType(orderDTO.getFinishType());
+        
         OrderStatus initialStatus = orderStatusRepository.findByName("Em Aberto");
         if (initialStatus == null) {
             throw new RuntimeException("Status 'Em Aberto' não encontrado no banco de dados");
         }
-        order.setStatus(initialStatus);
+        if (initialStatus.getId() == null) {
+            throw new RuntimeException("Status 'Em Aberto' encontrado mas sem ID válido");
+        }
+        
+        initialStatus = orderStatusRepository.findById(initialStatus.getId())
+                .orElseThrow(() -> new RuntimeException("Status 'Em Aberto' não encontrado por ID"));
 
         List<OrderItem> items = new ArrayList<>();
 
@@ -102,6 +108,12 @@ public class OrderService {
         }
 
         order.setOrderItems(items);
+        
+        order.setStatus(initialStatus);
+        
+        if (order.getStatus() == null || order.getStatus().getId() == null) {
+            throw new RuntimeException("Erro ao definir status do pedido");
+        }
 
         Order savedOrder = orderRepository.save(order);
 

@@ -80,6 +80,14 @@ public class Order {
         this.orderItems = orderItems;
     }
 
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDate.now();
