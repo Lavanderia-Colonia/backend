@@ -42,6 +42,7 @@ public class AuthConfig {
                         .requestMatchers("/api/v1/order-item-colors/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/products/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/orders/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/audits/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
